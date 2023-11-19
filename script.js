@@ -8,6 +8,7 @@ const api = {
 }
 
 
+// localStorage.clear();
 const getMyIp = async() => {
     const response = await fetch("https://api64.ipify.org?format=json")
     const data = await response.json()
@@ -33,7 +34,7 @@ const fetchLocation = async() => {
     } else {
         ipValue = ipInput.value.trim()
     }
-    const response = await fetch(`http://api.ipstack.com/${ipValue}?access_key=${api.ipstack_key}`);
+    const response = await fetch(`https://corsproxy.io/?http://api.ipstack.com/${ipValue}?access_key=${api.ipstack_key}`);
     const data = await response.json();
     const stringData = JSON.stringify(data)
     localStorage.setItem('ipLocation', stringData)
@@ -80,5 +81,6 @@ const updateUI = () => {
 
 
 const storedLocation = JSON.parse(localStorage.getItem("ipLocation"))
+console.log(storedLocation)
 
 updateUI()
