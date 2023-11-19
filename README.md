@@ -17,8 +17,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [click to view solution](https://github.com/iyke-e/ip-address-tracker-master)
+- Live Site URL: [click to viewsite](https://iyke-e.github.io/ip-address-tracker-master/)
 
 ## My process
 created the created map using leafletjs library and then made use of ipstack api to generate the data displayed on the ui
