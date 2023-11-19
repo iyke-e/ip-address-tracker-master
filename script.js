@@ -1,6 +1,7 @@
 const ipInput = document.querySelector("input")
 const submitBtn = document.querySelector("button")
 const currentip = document.querySelector(".current_ip_address")
+const iptext = document.querySelector(".ipAddress")
 const api = {
     ipstack_key: '319cc3732692547524a984b6b7e7ef67',
     positionstack_key: '3021bde901e93955d3a11fd48450c565'
@@ -12,8 +13,8 @@ const getMyIp = async() => {
     const data = await response.json()
     currentip.innerHTML = `Your current IP address is ${data.ip}`
     localStorage.setItem('currentIp', data.ip)
-    console.log(data)
 }
+
 getMyIp()
 
 const ipAdd = localStorage.getItem('currentIp')
@@ -26,21 +27,31 @@ submitBtn.addEventListener('click', (e) => {
 
 
 const fetchLocation = async() => {
-    const response = await fetch(`http://api.ipstack.com/${ipInput.value.trim()}?access_key=${api.ipstack_key}`);
+    let ipValue;
+    if (ipInput.value === "") {
+        ipValue = ipAdd
+    } else {
+        ipValue = ipInput.value.trim()
+    }
+    const response = await fetch(`http://api.ipstack.com/${ipValue}?access_key=${api.ipstack_key}`);
     const data = await response.json();
     const stringData = JSON.stringify(data)
     localStorage.setItem('ipLocation', stringData)
-    console.log(localStorage.getItem("ipLocation"))
     JSON.parse(localStorage.getItem("ipLocation"))
-    updateUI()
     location.reload()
+    updateUI()
+}
+
+if (localStorage.getItem("ipLocation") === null) {
+    fetchLocation()
 }
 
 
 
 
-
 const updateUI = () => {
+    const storedLocation = JSON.parse(localStorage.getItem("ipLocation"))
+
     document.querySelector(".ipAddress").innerHTML = storedLocation.ip
     document.querySelector(".location").innerHTML = `${storedLocation.city}, ${storedLocation.country_name}`
     document.querySelector(".timezone").innerHTML = `${storedLocation.continent_name}`
@@ -70,5 +81,4 @@ const updateUI = () => {
 
 const storedLocation = JSON.parse(localStorage.getItem("ipLocation"))
 
-console.log(storedLocation)
 updateUI()
