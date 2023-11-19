@@ -32,6 +32,7 @@ const fetchLocation = async() => {
     localStorage.setItem('ipLocation', stringData)
     console.log(localStorage.getItem("ipLocation"))
     JSON.parse(localStorage.getItem("ipLocation"))
+    updateUI()
     location.reload()
 }
 
@@ -39,33 +40,35 @@ const fetchLocation = async() => {
 
 
 
+const updateUI = () => {
+    document.querySelector(".ipAddress").innerHTML = storedLocation.ip
+    document.querySelector(".location").innerHTML = `${storedLocation.city}, ${storedLocation.country_name}`
+    document.querySelector(".timezone").innerHTML = `${storedLocation.continent_name}`
+    document.querySelector(".isp").innerHTML = storedLocation.zip
 
+
+    let lat = storedLocation.latitude;
+    let lng = storedLocation.longitude;
+
+    var map = L.map('map').setView([lat, lng], 16);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    var circle = L.circle([lat, lng], {
+        color: 'red',
+        fillColor: '#f03',
+        fillOpacity: 0.2,
+        radius: 100
+    }).addTo(map);
+
+    var marker = L.marker([lat, lng]).addTo(map);
+}
 
 
 const storedLocation = JSON.parse(localStorage.getItem("ipLocation"))
 
 console.log(storedLocation)
-document.querySelector(".ipAddress").innerHTML = storedLocation.ip
-document.querySelector(".location").innerHTML = `${storedLocation.city}, ${storedLocation.country_name}`
-document.querySelector(".timezone").innerHTML = `${storedLocation.continent_name}`
-document.querySelector(".isp").innerHTML = storedLocation.zip
-
-
-let lat = storedLocation.latitude;
-let lng = storedLocation.longitude;
-
-var map = L.map('map').setView([lat, lng], 16);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-var circle = L.circle([lat, lng], {
-    color: 'red',
-    fillColor: '#f03',
-    fillOpacity: 0.2,
-    radius: 100
-}).addTo(map);
-
-var marker = L.marker([lat, lng]).addTo(map);
+updateUI()
